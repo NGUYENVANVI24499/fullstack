@@ -39,7 +39,7 @@ const hasUserPassword = (password)=>{
 const getAllUser = ()=>{
   return new Promise(async(resolve, reject)=>{
       try {
-        const users = db.User.findAll({
+        const users = await db.User.findAll({
           raw:true
         })
         resolve(users)
@@ -48,7 +48,58 @@ const getAllUser = ()=>{
       }
   })
 }
+//lay thong tin userinfo boi id
+const getUserInfoById =(id)=>{
+  return new Promise(async(resolve, reject)=>{
+    try {
+      const user = await db.User.findOne({ where: { id: id}, raw:true })
+      if(user)
+      resolve(user)
+      resolve([])
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+const updateUserData = (data) =>{
+  return new Promise(async(resolve, reject)=>{
+    try {
+      const user = await db.User.findOne({
+        where:{id :data.id}
+      })
+      if(user){
+        user.firstName =data.firstname
+        user.lastName = data.lastname
+        user.address = data.address
+        await user.save()
+        const allUser = await db.User.findAll()
+        resolve(allUser)
+      }else{
+
+      }
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+const deleteUserById = id =>{
+  return new Promise(async(resolve, reject)=>{
+    try {
+      const user = await db.User.findOne({where:{id: id}})
+      if(user){
+        await user.destroy();
+      }
+      resolve()
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
 module.exports = {
   createNewUser: createNewUser,
-  getAllUser
+  getAllUser,
+  getUserInfoById,
+  updateUserData,
+  deleteUserById
 }
