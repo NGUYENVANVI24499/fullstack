@@ -1,7 +1,7 @@
 import bcrypt from'bcryptjs'
 import db from '../models/index'
 const salt = bcrypt.genSaltSync(10);
-
+//tạo mới use
 let createNewUser = async (data)=>{
   return new Promise(async (resolve , reject) =>{
     try{
@@ -23,7 +23,7 @@ let createNewUser = async (data)=>{
 
   })
 }
-
+// mã hóa paswork
 const hasUserPassword = (password)=>{
   return new Promise(async(resolve, reject)=>{
     try{
@@ -34,6 +34,21 @@ const hasUserPassword = (password)=>{
     }
   })
 }
+
+//lay thong tin use
+const getAllUser = ()=>{
+  return new Promise(async(resolve, reject)=>{
+      try {
+        const users = db.User.findAll({
+          raw:true
+        })
+        resolve(users)
+      } catch (error) {
+        reject(error)
+      }
+  })
+}
 module.exports = {
-  createNewUser: createNewUser
+  createNewUser: createNewUser,
+  getAllUser
 }

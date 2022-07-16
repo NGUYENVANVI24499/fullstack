@@ -18,10 +18,16 @@ const getCRUD =(req, res)=>{
 const postCRUD = async(req, res)=>{
  let mess =  await CRUDService.createNewUser(req.body)
  console.log(mess)
-  return res.send('post crud from')
+  return res.send('post crud from finish')
+}
+//hiển thị users
+const displayCRUD =async (req, res) =>{
+  const data = await CRUDService.getAllUser()
+  return res.render("displayCRUD.ejs",{data:data})
 }
 module.exports = {
   getHomePage: getHomePage,
   getCRUD: getCRUD,
-  postCRUD
+  postCRUD,
+  displayCRUD
 }
